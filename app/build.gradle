@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.greenrobot.greendao' // apply plugin 步骤3
+
 android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.zyw.day01"
+        applicationId "com.zyw.day02"
         minSdkVersion 22
         targetSdkVersion 28
         versionCode 1
@@ -17,13 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    greendao {
-        //数据库版本号，升级时修改
-        schemaVersion 1
-        //生成的DAO，DaoMaster和DaoSession的包路径。默认与表实体所在的包路径相同
-        daoPackage 'com.example.greendaodemo.db'
-    }
 }
 
 dependencies {
@@ -33,9 +26,4 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
-    implementation 'org.greenrobot:greendao:3.2.2' // add library
-
-    implementation 'org.greenrobot:greendao-generator:3.2.2'
-
 }

@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zyw.second.R;
-import com.zyw.second.bean.AClass;
+import com.zyw.second.bean.ListBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +21,15 @@ import butterknife.ButterKnife;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
-    List<AClass> data = new ArrayList<>();
-
-    Context context;
+    private List<ListBean.DataBean.DatasBean> data = new ArrayList<>();
+    private Context context;
+    private boolean theState = false;
 
     public DataAdapter(Context context) {
         this.context = context;
     }
 
-    public void addData(List<AClass> data) {
+    public void addData(List<ListBean.DataBean.DatasBean> data) {
         this.data.addAll(data);
         notifyDataSetChanged();
     }
@@ -39,12 +41,28 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        AClass aClass = data.get(i);
-        viewHolder.tv_name.setText(aClass.getName());
-        viewHolder.tv_sex.setText(aClass.getSex());
-        viewHolder.tv_age.setText(aClass.getAge());
-        viewHolder.tv_className.setText(aClass.getClassName());
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+        ListBean.DataBean.DatasBean datasBean = data.get(i);
+
+        Glide.with(context).load(datasBean.getEnvelopePic()).into(viewHolder.mImg);
+        viewHolder.tvTitle.setText(datasBean.getTitle());
+        viewHolder.tvDesc.setText(datasBean.getDesc());
+        viewHolder.tvWriter.setText(datasBean.getChapterName());
+        viewHolder.tvTime.setText(datasBean.getNiceDate());
+
+        viewHolder.ivState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (theState == false) {
+                    viewHolder.ivState.setBackgroundResource(R.drawable.video_is_follow_icon);
+                    theState = true;
+                } else {
+                    viewHolder.ivState.setBackgroundResource(R.drawable.add_keep);
+                    theState = false;
+                }
+            }
+        });
+
     }
 
     @Override
@@ -53,14 +71,18 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_name)
-        TextView tv_name;
-        @BindView(R.id.tv_sex)
-        TextView tv_sex;
-        @BindView(R.id.tv_age)
-        TextView tv_age;
-        @BindView(R.id.tv_className)
-        TextView tv_className;
+        @BindView(R.id.mImg)
+        ImageView mImg;
+        @BindView(R.id.tv_title)
+        TextView tvTitle;
+        @BindView(R.id.tv_desc)
+        TextView tvDesc;
+        @BindView(R.id.tv_writer)
+        TextView tvWriter;
+        @BindView(R.id.tv_time)
+        TextView tvTime;
+        @BindView(R.id.iv_state)
+        ImageView ivState;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
